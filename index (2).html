@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Наша история любви · Расширенный сайт</title>
+    <style>
+        /* ============ СБРОС И БАЗА ============ */
+        :root {
+            --pink-light: #fce4ec;
+            --pink: #f8bbd0;
+            --pink-dark: #f06292;
+            --crimson: #d81b60;
+            --deep: #880e4f;
+            --rose: #ff80ab;
+            --bg-gradient: linear-gradient(135deg, #fff0f5 0%, #ffe0ec 25%, #ffd1e3 50%, #ffb6d5 75%, #ff9ecb 100%);
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-border: rgba(216, 27, 96, 0.3);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+            --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(255, 255, 255, 0.7) inset;
+            --radius: 2.5rem;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Тёмная тема */
+        body[data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1a0a0f 0%, #2d0a1e 30%, #3d0c2a 60%, #4a0d33 100%);
+            --card-bg: rgba(30, 10, 20, 0.85);
+            --card-border: rgba(255, 100, 150, 0.4);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 100, 150, 0.2) inset;
+            --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 100, 150, 0.4) inset;
+            --pink-light: #2a0a18;
+            --pink: #4a1a30;
+            --pink-dark: #6d2848;
+            --crimson: #ff5c8a;
+            --deep: #ffb6d5;
+            --rose: #ff80ab;
+        }
+
+        /* Золотая тема */
+        body[data-theme="gold"] {
+            --bg-gradient: linear-gradient(135deg, #fff8e1 0%, #ffecb3 25%, #ffe082 50%, #ffd54f 75%, #ffca28 100%);
+            --card-bg: rgba(255, 255, 240, 0.8);
+            --card-border: rgba(255, 160, 0, 0.5);
+            --shadow: 0 20px 40px rgba(180, 120, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.7) inset;
+            --shadow-hover: 0 25px 50px rgba(180, 120, 0, 0.35), 0 0 0 4px rgba(255, 255, 255, 0.9) inset;
+            --pink-light: #fffde7;
+            --pink: #ffecb3;
+            --pink-dark: #ffd54f;
+            --crimson: #e65100;
+            --deep: #bf360c;
+            --rose: #ff8f00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* ============ ПЛАВАЮЩИЕ СЕРДЕЧКИ ============ */
+        .hearts-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .heart-particle {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatHeart linear infinite;
+            opacity: 0;
+            user-select: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        @keyframes floatHeart {
+            0% { transform: translateY(110vh) scale(0.7) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            50% { transform: translateY(50vh) scale(1.3) rotate(15deg); opacity: 0.9; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(0.9) rotate(-10deg); opacity: 0; }
+        }
+
+        /* ============ ОСНОВНОЙ КОНТЕЙНЕР ============ */
+        .site-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* ============ ШАПКА И НАВИГАЦИЯ ============ */
+        .main-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 3rem;
+            padding: 1.8rem 2rem;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--card-border);
+            transition: background 0.5s ease;
+        }
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .logo-title h1 {
+            font-size: 2.8rem;
+            color: var(--deep);
+            letter-spacing: 3px;
+            text-shadow: 3px 3px 0 rgba(255,255,255,0.5);
+            font-weight: 700;
+            transition: color 0.4s;
+        }
+        .logo-heart {
+            font-size: 3.5rem;
+            animation: heartPulse 2s infinite;
+            filter: drop-shadow(0 4px 8px rgba(216,27,96,0.4));
+        }
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+        }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        .nav-tab {
+            background: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--deep);
+            border: 2px solid var(--pink);
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            background: rgba(255,255,255,0.7);
+        }
+        .nav-tab:hover {
+            background: var(--pink-light);
+            border-color: var(--crimson);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(216,27,96,0.2);
+        }
+        .nav-tab.active {
+            background: var(--crimson);
+            color: white;
+            border-color: var(--crimson);
+            box-shadow: 0 8px 20px rgba(216,27,96,0.4);
+        }
+
+        /* ============ КАРТОЧКИ СЕКЦИЙ ============ */
+        .section-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem 2.8rem;
+            transition: var(--transition);
+            border: 2px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .section-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .section-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ ПИСЬМО ============ */
+        .letter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px dashed var(--crimson);
+            padding-bottom: 1rem;
+        }
+        .letter-header h2 {
+            font-size: 2rem;
+            color: var(--deep);
+            letter-spacing: 2px;
+            transition: color 0.4s;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+        .btn {
+            background: rgba(255,255,255,0.8);
+            border: none;
+            padding: 0.7rem 1.3rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--deep);
+            border: 2px solid var(--pink);
+            letter-spacing: 0.5px;
+            font-family: 'Georgia', serif;
+        }
+        .btn:hover {
+            background: var(--pink-light);
+            border-color: var(--crimson);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(216,27,96,0.2);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-accent {
+            background: var(--crimson);
+            color: white;
+            border-color: var(--crimson);
+        }
+        .btn-accent:hover {
+            background: var(--deep);
+            border-color: var(--deep);
+        }
+
+        .photo-main-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .photo-main-container {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--pink-light);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2), 0 0 0 8px rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 4px solid var(--crimson);
+        }
+        .photo-main-container:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25), 0 0 0 10px rgba(255,255,255,0.9);
+        }
+        .photo-main-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-main-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep);
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .photo-main-placeholder span {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .letter-content {
+            background: rgba(255,255,255,0.6);
+            border-radius: 2rem;
+            padding: 2rem 2.2rem;
+            margin: 1.5rem 0;
+            min-height: 280px;
+            border: 2px solid var(--pink);
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.03);
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: var(--deep);
+            outline: none;
+            transition: var(--transition);
+            word-break: break-word;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.3px;
+        }
+        .letter-content:focus {
+            border-color: var(--crimson);
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 0 0 5px rgba(216,27,96,0.15), inset 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .letter-content:empty:before {
+            content: attr(data-placeholder);
+            color: #b76e8f;
+            font-style: italic;
+        }
+
+        .signature-area {
+            display: flex;
+            justify-content: flex-end;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: var(--deep);
+            font-style: italic;
+        }
+        .signature-area input {
+            background: transparent;
+            border: none;
+            border-bottom: 3px dashed var(--crimson);
+            font-size: 1.5rem;
+            font-family: 'Georgia', serif;
+            color: var(--deep);
+            text-align: right;
+            width: auto;
+            max-width: 300px;
+            outline: none;
+            font-style: italic;
+            padding: 0.2rem 0.4rem;
+            transition: border-color 0.3s;
+        }
+        .signature-area input:focus {
+            border-bottom-color: var(--deep);
+        }
+
+        /* ============ ГАЛЕРЕЯ ============ */
+        .gallery-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        .gallery-item {
+            aspect-ratio: 1 / 1;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: var(--pink-light);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid white;
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: var(--crimson);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-item .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(216,27,96,0.9);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .gallery-item:hover .delete-btn {
+            opacity: 1;
+        }
+        .gallery-item .delete-btn:hover {
+            background: #b71c1c;
+            transform: scale(1.1);
+        }
+
+        .add-photo-card {
+            aspect-ratio: 1 / 1;
+            border-radius: 1.5rem;
+            border: 4px dashed var(--crimson);
+            background: rgba(255,255,255,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--deep);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .add-photo-card:hover {
+            background: var(--pink-light);
+            border-color: var(--deep);
+            transform: scale(1.03);
+        }
+        .add-photo-card span {
+            font-size: 3rem;
+        }
+
+        /* ============ СЧЁТЧИК ============ */
+        .counter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            text-align: center;
+        }
+        .counter-card {
+            background: rgba(255,255,255,0.7);
+            border-radius: 2rem;
+            padding: 1.5rem 2rem;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid white;
+            transition: var(--transition);
+            background: var(--card-bg);
+        }
+        .counter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        .counter-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--crimson);
+            line-height: 1.2;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+        }
+        .counter-label {
+            font-size: 1.1rem;
+            color: var(--deep);
+            letter-spacing: 1px;
+        }
+        .date-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        .date-input-group label {
+            font-size: 1.2rem;
+            color: var(--deep);
+        }
+        .date-input-group input {
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            border: 2px solid var(--pink);
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            background: white;
+            outline: none;
+            transition: var(--transition);
+            color: var(--deep);
+        }
+        .date-input-group input:focus {
+            border-color: var(--crimson);
+            box-shadow: 0 0 0 4px rgba(216,27,96,0.15);
+        }
+
+        /* ============ АУДИОПЛЕЕР ============ */
+        .audio-player {
+            background: rgba(255,255,255,0.6);
+            border-radius: 2rem;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            border: 2px solid var(--pink);
+        }
+        .audio-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .audio-controls input[type="file"] {
+            display: none;
+        }
+        .audio-url-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            border: 2px solid var(--pink);
+            font-size: 1rem;
+            background: white;
+            outline: none;
+            transition: var(--transition);
+            color: var(--deep);
+        }
+        .audio-url-input:focus {
+            border-color: var(--crimson);
+            box-shadow: 0 0 0 4px rgba(216,27,96,0.15);
+        }
+        .audio-player audio {
+            width: 100%;
+            border-radius: 30px;
+        }
+
+        /* ============ НАСТРОЙКИ ТЕМ ============ */
+        .theme-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .theme-btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            border: 2px solid var(--pink);
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            font-family: 'Georgia', serif;
+            color: var(--deep);
+        }
+        .theme-btn:hover {
+            background: var(--pink-light);
+            border-color: var(--crimson);
+            transform: translateY(-3px);
+        }
+        .theme-btn.active {
+            background: var(--crimson);
+            color: white;
+            border-color: var(--crimson);
+        }
+
+        /* ============ МОДАЛКА ============ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: black;
+        }
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: var(--crimson);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* ============ ПОДСКАЗКА ============ */
+        .hint {
+            text-align: center;
+            color: var(--deep);
+            opacity: 0.8;
+            font-size: 1rem;
+            margin-top: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============ АДАПТИВ ============ */
+        @media (max-width: 700px) {
+            body { padding: 1rem 0.5rem; }
+            .site-wrapper { gap: 1.2rem; }
+            .main-header { padding: 1.2rem 1rem; }
+            .logo-title h1 { font-size: 2rem; }
+            .nav-tab { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+            .section-card { padding: 1.5rem 1.2rem; border-radius: 1.8rem; }
+            .photo-main-container { width: 150px; height: 150px; }
+            .letter-content { font-size: 1.1rem; padding: 1.2rem; min-height: 180px; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.8rem; }
+            .counter-number { font-size: 2.5rem; }
+            .signature-area { font-size: 1.1rem; }
+            .signature-area input { font-size: 1.1rem; }
+            .btn { padding: 0.5rem 0.9rem; font-size: 0.8rem; }
+        }
+        @media (max-width: 400px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-tabs { gap: 0.4rem; }
+        }
+
+        .section-card.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body data-theme="classic">
+
+    <!-- Плавающие сердечки -->
+    <div class="hearts-layer" id="heartsContainer"></div>
+
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="photoModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <img id="modalImage" src="#" alt="Фото">
+        </div>
+    </div>
+
+    <div class="site-wrapper">
+        <!-- ==================== ШАПКА ==================== -->
+        <header class="main-header">
+            <div class="logo-title">
+                <span class="logo-heart">💖</span>
+                <h1>Наша история</h1>
+                <span class="logo-heart">💘</span>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-tab="letter">💌 Письмо</button>
+                <button class="nav-tab" data-tab="gallery">📸 Галерея</button>
+                <button class="nav-tab" data-tab="about">⏳ О нас</button>
+                <button class="nav-tab" data-tab="settings">⚙️ Настройки</button>
+            </nav>
+        </header>
+
+        <!-- ==================== СЕКЦИЯ ПИСЬМО ==================== -->
+        <section class="section-card" id="section-letter">
+            <div class="section-content">
+                <div class="letter-header">
+                    <h2>Моё послание</h2>
+                    <div class="btn-group">
+                        <button class="btn" id="uploadMainPhotoBtn" title="Загрузить главное фото">📷 Фото</button>
+                        <button class="btn" id="saveBtn" title="Сохранить">💾 Сохранить</button>
+                        <button class="btn" id="exportBtn" title="Экспорт в txt">📄 Экспорт</button>
+                        <button class="btn btn-accent" id="printBtn" title="Печать">🖨️ Печать</button>
+                        <button class="btn" id="clearLetterBtn" title="Очистить">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="photo-main-wrapper">
+                    <div class="photo-main-container" id="mainPhotoContainer" title="Нажмите, чтобы загрузить фото">
+                        <div class="photo-main-placeholder" id="mainPhotoPlaceholder">
+                            <span>📸</span>
+                            <span>Главное фото</span>
+                        </div>
+                        <img id="mainPhotoPreview" src="#" alt="Фото" style="display: none;" />
+                    </div>
+                    <input type="file" id="mainFileInput" accept="image/*" style="display: none;" />
+                </div>
+
+                <div class="letter-content" id="letterText" contenteditable="true"
+                     data-placeholder="Напишите самое искреннее любовное письмо... Выразите всё, что чувствуете...">
+                </div>
+
+                <div class="signature-area">
+                    <span>С любовью,</span>
+                    <input type="text" id="signatureInput" placeholder="Ваше имя" value="">
+                </div>
+                <div class="hint">✍️ Кликните на текст, чтобы редактировать. Все данные сохраняются в браузере автоматически.</div>
+            </div>
+        </section>
+
+        <!-- ==================== СЕКЦИЯ ГАЛЕРЕЯ ==================== -->
+        <section class="section-card hidden" id="section-gallery">
+            <div class="section-content">
+                <div class="letter-header">
+                    <h2>Наши моменты</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-accent" id="addPhotoBtn">➕ Добавить фото</button>
+                        <button class="btn" id="startSlideshowBtn">▶️ Слайд-шоу</button>
+                        <button class="btn" id="stopSlideshowBtn" style="display:none;">⏹️ Стоп</button>
+                        <button class="btn" id="clearGalleryBtn">🗑️ Очистить всё</button>
+                    </div>
+                </div>
+                <div class="gallery-grid" id="galleryGrid">
+                    <div class="add-photo-card" id="addPhotoCard">
+                        <span>📷</span>
+                        <span>Добавить</span>
+                    </div>
+                </div>
+                <input type="file" id="galleryFileInput" accept="image/*" multiple style="display: none;" />
+                <div class="hint">Нажмите на фото, чтобы увеличить. Наведите для удаления.</div>
+            </div>
+        </section>
+
+        <!-- ==================== СЕКЦИЯ О НАС ==================== -->
+        <section class="section-card hidden" id="section-about">
+            <div class="section-content">
+                <div class="letter-header">
+                    <h2>Наша любовь в цифрах</h2>
+                </div>
+                <div class="counter-section">
+                    <div class="counter-card">
+                        <div class="counter-number" id="daysTogether">—</div>
+                        <div class="counter-label">дней вместе</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="hoursTogether">—</div>
+                        <div class="counter-label">часов</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="minutesTogether">—</div>
+                        <div class="counter-label">минут</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="anniversaryCountdown">—</div>
+                        <div class="counter-label">до годовщины (дней)</div>
+                    </div>
+                </div>
+                <div class="date-input-group">
+                    <label for="startDate">📅 Дата начала отношений:</label>
+                    <input type="date" id="startDate" value="">
+                </div>
+                <div class="hint">Выберите дату, и счётчики будут обновляться автоматически.</div>
+            </div>
+        </section>
+
+        <!-- ==================== СЕКЦИЯ НАСТРОЙКИ ==================== -->
+        <section class="section-card hidden" id="section-settings">
+            <div class="section-content">
+                <div class="letter-header">
+                    <h2>Настройки</h2>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="color:var(--deep); margin-bottom:1rem;">🎨 Цветовая тема</h3>
+                    <div class="theme-selector">
+                        <button class="theme-btn active" data-theme="classic">🌸 Классическая</button>
+                        <button class="theme-btn" data-theme="dark">🌙 Тёмная</button>
+                        <button class="theme-btn" data-theme="gold">✨ Золотая</button>
+                    </div>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="color:var(--deep); margin-bottom:1rem;">🎵 Музыка</h3>
+                    <div class="audio-player">
+                        <div class="audio-controls">
+                            <button class="btn" id="loadAudioBtn">📂 Загрузить файл</button>
+                            <input type="text" class="audio-url-input" id="audioUrlInput" placeholder="Или вставьте ссылку на mp3...">
+                            <button class="btn" id="applyAudioUrlBtn">🔗 Применить</button>
+                        </div>
+                        <audio id="audioPlayer" controls></audio>
+                        <input type="file" id="audioFileInput" accept="audio/*" style="display:none;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== ЭЛЕМЕНТЫ ====================
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const sections = {
+                letter: document.getElementById('section-letter'),
+                gallery: document.getElementById('section-gallery'),
+                about: document.getElementById('section-about'),
+                settings: document.getElementById('section-settings')
+            };
+
+            // Письмо
+            const mainPhotoContainer = document.getElementById('mainPhotoContainer');
+            const mainPhotoPlaceholder = document.getElementById('mainPhotoPlaceholder');
+            const mainPhotoPreview = document.getElementById('mainPhotoPreview');
+            const mainFileInput = document.getElementById('mainFileInput');
+            const uploadMainPhotoBtn = document.getElementById('uploadMainPhotoBtn');
+            const letterText = document.getElementById('letterText');
+            const signatureInput = document.getElementById('signatureInput');
+            const saveBtn = document.getElementById('saveBtn');
+            const exportBtn = document.getElementById('exportBtn');
+            const printBtn = document.getElementById('printBtn');
+            const clearLetterBtn = document.getElementById('clearLetterBtn');
+
+            // Галерея
+            const galleryGrid = document.getElementById('galleryGrid');
+            const addPhotoCard = document.getElementById('addPhotoCard');
+            const addPhotoBtn = document.getElementById('addPhotoBtn');
+            const clearGalleryBtn = document.getElementById('clearGalleryBtn');
+            const galleryFileInput = document.getElementById('galleryFileInput');
+            const startSlideshowBtn = document.getElementById('startSlideshowBtn');
+            const stopSlideshowBtn = document.getElementById('stopSlideshowBtn');
+
+            // Модальное окно
+            const photoModal = document.getElementById('photoModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+            // Счётчик
+            const startDateInput = document.getElementById('startDate');
+            const daysTogether = document.getElementById('daysTogether');
+            const hoursTogether = document.getElementById('hoursTogether');
+            const minutesTogether = document.getElementById('minutesTogether');
+            const anniversaryCountdown = document.getElementById('anniversaryCountdown');
+
+            // Настройки
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioFileInput = document.getElementById('audioFileInput');
+            const loadAudioBtn = document.getElementById('loadAudioBtn');
+            const audioUrlInput = document.getElementById('audioUrlInput');
+            const applyAudioUrlBtn = document.getElementById('applyAudioUrlBtn');
+
+            // Фон
+            const heartsContainer = document.getElementById('heartsContainer');
+
+            // ==================== КЛЮЧИ ХРАНЕНИЯ ====================
+            const STORAGE = {
+                mainPhoto: 'loveSite2_mainPhoto',
+                letterText: 'loveSite2_letterText',
+                signature: 'loveSite2_signature',
+                gallery: 'loveSite2_galleryPhotos',
+                startDate: 'loveSite2_startDate',
+                theme: 'loveSite2_theme',
+                audio: 'loveSite2_audioUrl'
+            };
+
+            // ==================== ФУНКЦИИ ====================
+            // Сердечки
+            function createHearts() {
+                const symbols = ['❤️', '💖', '💕', '💗', '💓', '💘', '🌸', '✨', '💝', '🌹'];
+                for (let i = 0; i < 40; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-particle');
+                    heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.fontSize = (Math.random() * 2.5 + 1.5) + 'rem';
+                    heart.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                    heart.style.animationDelay = Math.random() * 12 + 's';
+                    heartsContainer.appendChild(heart);
+                }
+            }
+            createHearts();
+
+            // Переключение вкладок
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    Object.keys(sections).forEach(key => {
+                        sections[key].classList.toggle('hidden', key !== tabName);
+                    });
+                });
+            });
+
+            // ==================== ГЛАВНОЕ ФОТО ====================
+            function loadMainPhoto() {
+                const saved = localStorage.getItem(STORAGE.mainPhoto);
+                if (saved) {
+                    mainPhotoPreview.src = saved;
+                    mainPhotoPreview.style.display = 'block';
+                    mainPhotoPlaceholder.style.display = 'none';
+                } else {
+                    mainPhotoPreview.style.display = 'none';
+                    mainPhotoPlaceholder.style.display = 'flex';
+                }
+            }
+
+            function handleMainFile(file) {
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    mainPhotoPreview.src = dataUrl;
+                    mainPhotoPreview.style.display = 'block';
+                    mainPhotoPlaceholder.style.display = 'none';
+                    try { localStorage.setItem(STORAGE.mainPhoto, dataUrl); } catch(e) {}
+                };
+                reader.readAsDataURL(file);
+            }
+
+            mainPhotoContainer.addEventListener('click', () => mainFileInput.click());
+            uploadMainPhotoBtn.addEventListener('click', (e) => { e.stopPropagation(); mainFileInput.click(); });
+            mainFileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) handleMainFile(e.target.files[0]);
+                mainFileInput.value = '';
+            });
+
+            // Перетаскивание
+            mainPhotoContainer.addEventListener('dragover', (e) => { e.preventDefault(); mainPhotoContainer.style.borderColor = '#ad1457'; });
+            mainPhotoContainer.addEventListener('dragleave', () => { mainPhotoContainer.style.borderColor = ''; });
+            mainPhotoContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                mainPhotoContainer.style.borderColor = '';
+                if (e.dataTransfer.files[0]) handleMainFile(e.dataTransfer.files[0]);
+            });
+
+            // ==================== ПИСЬМО И ПОДПИСЬ ====================
+            function loadLetterAndSignature() {
+                const savedText = localStorage.getItem(STORAGE.letterText);
+                if (savedText !== null) {
+                    letterText.innerHTML = savedText;
+                } else {
+                    letterText.innerHTML = `<p>Моя дорогая...</p><p>Я так долго хотел(а) сказать тебе, как много ты для меня значишь. Каждый момент рядом с тобой — это маленькое чудо, которое я бережно храню в сердце.</p><p>Ты — моё вдохновение, моя тихая гавань и самый яркий свет в этом мире. Я люблю тебя больше, чем можно выразить словами.</p>`;
+                }
+                const savedSig = localStorage.getItem(STORAGE.signature);
+                signatureInput.value = savedSig !== null ? savedSig : 'Твой(я) навсегда';
+            }
+
+            function saveLetterAndSignature() {
+                try {
+                    localStorage.setItem(STORAGE.letterText, letterText.innerHTML);
+                    localStorage.setItem(STORAGE.signature, signatureInput.value);
+                    if (mainPhotoPreview.style.display !== 'none' && mainPhotoPreview.src.startsWith('data:')) {
+                        localStorage.setItem(STORAGE.mainPhoto, mainPhotoPreview.src);
+                    }
+                } catch(e) {}
+                showSaveIndicator();
+            }
+
+            function showSaveIndicator() {
+                saveBtn.textContent = '✅ Сохранено!';
+                setTimeout(() => { saveBtn.innerHTML = '💾 Сохранить'; }, 1500);
+            }
+
+            let debounceTimer;
+            function autoSave() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(saveLetterAndSignature, 500);
+            }
+            letterText.addEventListener('input', autoSave);
+            signatureInput.addEventListener('input', autoSave);
+            letterText.addEventListener('blur', saveLetterAndSignature);
+            signatureInput.addEventListener('blur', saveLetterAndSignature);
+            saveBtn.addEventListener('click', saveLetterAndSignature);
+
+            clearLetterBtn.addEventListener('click', () => {
+                if (confirm('Очистить письмо и подпись?')) {
+                    localStorage.removeItem(STORAGE.letterText);
+                    localStorage.removeItem(STORAGE.signature);
+                    letterText.innerHTML = '';
+                    signatureInput.value = '';
+                    showSaveIndicator();
+                }
+            });
+
+            // Экспорт в txt
+            exportBtn.addEventListener('click', () => {
+                const text = letterText.innerText;
+                const signature = signatureInput.value;
+                const content = `${text}\n\nС любовью, ${signature}`;
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'love-letter.txt';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // Печать
+            printBtn.addEventListener('click', () => {
+                const btnGroup = document.querySelector('.btn-group');
+                const hint = document.querySelector('.hint');
+                const originalBtnDisplay = btnGroup.style.display;
+                const originalHintDisplay = hint.style.display;
+                btnGroup.style.display = 'none';
+                hint.style.display = 'none';
+                window.print();
+                setTimeout(() => {
+                    btnGroup.style.display = originalBtnDisplay;
+                    hint.style.display = originalHintDisplay;
+                }, 100);
+            });
+
+            // ==================== ГАЛЕРЕЯ ====================
+            function loadGallery() {
+                const saved = localStorage.getItem(STORAGE.gallery);
+                const photos = saved ? JSON.parse(saved) : [];
+                const items = galleryGrid.querySelectorAll('.gallery-item');
+                items.forEach(item => item.remove());
+                photos.forEach((photo, index) => {
+                    addGalleryPhoto(photo, index, false);
+                });
+            }
+
+            function addGalleryPhoto(dataUrl, index, save = true) {
+                const photoDiv = document.createElement('div');
+                photoDiv.classList.add('gallery-item');
+                photoDiv.dataset.index = index;
+                photoDiv.innerHTML = `
+                    <img src="${dataUrl}" alt="Фото ${index + 1}">
+                    <button class="delete-btn" title="Удалить фото">✕</button>
+                `;
+                galleryGrid.insertBefore(photoDiv, addPhotoCard);
+
+                photoDiv.querySelector('img').addEventListener('click', () => {
+                    modalImage.src = dataUrl;
+                    photoModal.classList.add('active');
+                });
+
+                photoDiv.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeGalleryPhoto(index);
+                });
+
+                if (save) saveGallery();
+            }
+
+            function saveGallery() {
+                const items = galleryGrid.querySelectorAll('.gallery-item img');
+                const photos = [];
+                items.forEach(img => photos.push(img.src));
+                try { localStorage.setItem(STORAGE.gallery, JSON.stringify(photos)); } catch(e) {}
+            }
+
+            function removeGalleryPhoto(index) {
+                const items = galleryGrid.querySelectorAll('.gallery-item');
+                if (items[index]) items[index].remove();
+                const newItems = galleryGrid.querySelectorAll('.gallery-item');
+                newItems.forEach((item, i) => {
+                    item.dataset.index = i;
+                    const btn = item.querySelector('.delete-btn');
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        removeGalleryPhoto(i);
+                    };
+                });
+                saveGallery();
+            }
+
+            function clearGallery() {
+                if (confirm('Удалить все фотографии из галереи?')) {
+                    const items = galleryGrid.querySelectorAll('.gallery-item');
+                    items.forEach(item => item.remove());
+                    localStorage.removeItem(STORAGE.gallery);
+                }
+            }
+
+            addPhotoCard.addEventListener('click', () => galleryFileInput.click());
+            addPhotoBtn.addEventListener('click', () => galleryFileInput.click());
+            galleryFileInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (files.length) {
+                    for (let file of files) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            addGalleryPhoto(ev.target.result, galleryGrid.querySelectorAll('.gallery-item').length);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+                galleryFileInput.value = '';
+            });
+            clearGalleryBtn.addEventListener('click', clearGallery);
+
+            // Слайд-шоу
+            let slideshowInterval = null;
+            function startSlideshow() {
+                const photos = galleryGrid.querySelectorAll('.gallery-item img');
+                if (photos.length === 0) {
+                    alert('Добавьте хотя бы одно фото в галерею.');
+                    return;
+                }
+                let current = 0;
+                modalImage.src = photos[0].src;
+                photoModal.classList.add('active');
+                slideshowInterval = setInterval(() => {
+                    current = (current + 1) % photos.length;
+                    modalImage.src = photos[current].src;
+                }, 3000);
+                startSlideshowBtn.style.display = 'none';
+                stopSlideshowBtn.style.display = 'inline-flex';
+            }
+            function stopSlideshow() {
+                clearInterval(slideshowInterval);
+                photoModal.classList.remove('active');
+                startSlideshowBtn.style.display = 'inline-flex';
+                stopSlideshowBtn.style.display = 'none';
+            }
+            startSlideshowBtn.addEventListener('click', startSlideshow);
+            stopSlideshowBtn.addEventListener('click', stopSlideshow);
+            modalCloseBtn.addEventListener('click', () => {
+                stopSlideshow();
+                photoModal.classList.remove('active');
+            });
+            photoModal.addEventListener('click', (e) => {
+                if (e.target === photoModal) {
+                    stopSlideshow();
+                    photoModal.classList.remove('active');
+                }
+            });
+
+            // ==================== СЧЁТЧИКИ ====================
+            function updateCounter() {
+                const startDateValue = startDateInput.value;
+                if (!startDateValue) {
+                    daysTogether.textContent = '—';
+                    hoursTogether.textContent = '—';
+                    minutesTogether.textContent = '—';
+                    anniversaryCountdown.textContent = '—';
+                    return;
+                }
+                const start = new Date(startDateValue);
+                const now = new Date();
+                if (start > now) {
+                    daysTogether.textContent = '0';
+                    hoursTogether.textContent = '0';
+                    minutesTogether.textContent = '0';
+                    anniversaryCountdown.textContent = '—';
+                    return;
+                }
+                // Дни вместе
+                const diffMs = now - start;
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                daysTogether.textContent = diffDays.toLocaleString('ru-RU');
+                hoursTogether.textContent = diffHours.toLocaleString('ru-RU');
+                minutesTogether.textContent = diffMinutes.toLocaleString('ru-RU');
+
+                // До годовщины (следующее повторение даты)
+                const currentYear = now.getFullYear();
+                let nextAnniversary = new Date(currentYear, start.getMonth(), start.getDate());
+                if (nextAnniversary < now) {
+                    nextAnniversary = new Date(currentYear + 1, start.getMonth(), start.getDate());
+                }
+                const daysUntil = Math.ceil((nextAnniversary - now) / (1000 * 60 * 60 * 24));
+                anniversaryCountdown.textContent = daysUntil.toLocaleString('ru-RU');
+            }
+
+            startDateInput.addEventListener('change', () => {
+                localStorage.setItem(STORAGE.startDate, startDateInput.value);
+                updateCounter();
+            });
+            function loadStartDate() {
+                const saved = localStorage.getItem(STORAGE.startDate);
+                if (saved) startDateInput.value = saved;
+                updateCounter();
+            }
+            setInterval(updateCounter, 60000);
+
+            // ==================== ТЕМЫ ====================
+            function applyTheme(theme) {
+                document.body.dataset.theme = theme;
+                localStorage.setItem(STORAGE.theme, theme);
+                themeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+            }
+            themeBtns.forEach(btn => {
+                btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+            });
+            const savedTheme = localStorage.getItem(STORAGE.theme) || 'classic';
+            applyTheme(savedTheme);
+
+            // ==================== АУДИО ====================
+            function loadAudioFromStorage() {
+                const savedUrl = localStorage.getItem(STORAGE.audio);
+                if (savedUrl) {
+                    audioPlayer.src = savedUrl;
+                    audioUrlInput.value = savedUrl;
+                }
+            }
+            loadAudioBtn.addEventListener('click', () => audioFileInput.click());
+            audioFileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    const fileUrl = URL.createObjectURL(e.target.files[0]);
+                    audioPlayer.src = fileUrl;
+                    localStorage.setItem(STORAGE.audio, fileUrl);
+                    audioUrlInput.value = '';
+                }
+                audioFileInput.value = '';
+            });
+            applyAudioUrlBtn.addEventListener('click', () => {
+                const url = audioUrlInput.value.trim();
+                if (url) {
+                    audioPlayer.src = url;
+                    localStorage.setItem(STORAGE.audio, url);
+                }
+            });
+
+            // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+            loadMainPhoto();
+            loadLetterAndSignature();
+            loadGallery();
+            loadStartDate();
+            loadAudioFromStorage();
+
+            console.log('💖 Расширенный сайт любви загружен!');
+        })();
+    </script>
+</body>
+</html>
